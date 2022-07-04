@@ -298,6 +298,7 @@ construct_runtime!(
 		TemplateModule: pallet_template,
 		SimplePallet: pallet_simple_pallet,
 		UseStorage: pallet_use_storage,
+		UseErrors: pallet_use_errors,
 	}
 );
 

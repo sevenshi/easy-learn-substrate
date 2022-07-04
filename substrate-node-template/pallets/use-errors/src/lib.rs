@@ -1,35 +1,34 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-/// Edit this file to define custom logic or remove it if it is not needed.
-/// Learn more about FRAME and the core library of Substrate FRAME pallets:
-/// <https://docs.substrate.io/v3/runtime/frame>
+// 1. Imports and Dependencies
 pub use pallet::*;
-
-#[cfg(feature = "runtime-benchmarks")]
-mod benchmarking;
-
 #[frame_support::pallet]
 pub mod pallet {
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
-	/// Configure the pallet by specifying the parameters and types on which it depends.
-	#[pallet::config]
-	pub trait Config: frame_system::Config {
-		/// Because this pallet emits events, it depends on the runtime's definition of an event.
-		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
-	}
-
+	// 2. Declaration of the Pallet type
+	// This is a placeholder to implement traits and methods.
 	#[pallet::pallet]
 	#[pallet::generate_store(pub(super) trait Store)]
 	pub struct Pallet<T>(_);
 
-	// The pallet's runtime storage items.
-	// https://docs.substrate.io/v3/runtime/storage
+	// 3. Runtime Configuration Trait
+	// All types and constants go here.
+	// Use #[pallet::constant] and #[pallet::extra_constants]
+	// to pass in values to metadata.
+	#[pallet::config]
+	pub trait Config: frame_system::Config {
+		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
+	}
+
+	// 4. Runtime Storage
+	// use storageValue store class.
 	#[pallet::storage]
 	#[pallet::getter(fn my_class)]
-	pub type Class<T: Config> = StorageValue<_, u32>;
+	pub type Class<T: Config> = StorageValue<_, u32, ValueQuery>;
 
+	// use storageMap store (student number -> student name).
 	#[pallet::storage]
 	#[pallet::getter(fn students_info)]
 	pub type StudentsInfo<T: Config> = StorageMap<_, Blake2_128Concat, u32, u128, ValueQuery>;
@@ -46,8 +45,8 @@ pub mod pallet {
 		ValueQuery,
 	>;
 
-	// Pallets use events to inform users when important changes are made.
-	// https://docs.substrate.io/v3/runtime/events-and-errors
+	// 5. Runtime Events
+	// Can stringify event types to metadata.
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
@@ -56,23 +55,28 @@ pub mod pallet {
 		SetDormInfo(u32, u32, u32),
 	}
 
-	// Errors inform users that something went wrong.
-	#[pallet::error]
+	// 8. Runtime Errors
+	#[pallet::error] 
 	pub enum Error<T> {
-		/// Error names should be descriptive.
-		NoneValue,
-		/// Errors should have helpful documentation associated with them.
-		StorageOverflow,
-	}
+		// Class 只允许设置一次
+        SetClassDuplicate,
+		// 相同学号的只允许设置一次名字
+        SetStudentsInfoDuplicate,
+		// 相同床位只允许设置一次
+        SetDormInfoDuplicate,
+    }
 
-	// Dispatchable functions allows users to interact with the pallet and invoke state changes.
-	// These functions materialize as "extrinsics", which are often compared to transactions.
-	// Dispatchable functions must be annotated with a weight and must return a DispatchResult.
+	// 7. Extrinsics
+	// Functions that are callable from outside the runtime.
 	#[pallet::call]
 	impl<T: Config> Pallet<T> {
 		#[pallet::weight(0)]
 		pub fn set_class_info(origin: OriginFor<T>, class: u32) -> DispatchResultWithPostInfo {
 			ensure_root(origin)?;
+
+			if Class::<T>::exists() {
+				return Err(Error::<T>::SetClassDuplicate.into())
+			}
 
 			Class::<T>::put(class);
 			Self::deposit_event(Event::SetClass(class));
@@ -88,6 +92,10 @@ pub mod pallet {
 		) -> DispatchResultWithPostInfo {
 			ensure_signed(origin)?;
 
+			if StudentsInfo::<T>::contains_key(student_number) {
+				return Err(Error::<T>::SetStudentsInfoDuplicate.into())
+			}
+
 			StudentsInfo::<T>::insert(&student_number, &student_name);
 			Self::deposit_event(Event::SetStudentInfo(student_number, student_name));
 
@@ -102,6 +110,10 @@ pub mod pallet {
 			student_number: u32,
 		) -> DispatchResultWithPostInfo {
 			ensure_signed(origin)?;
+
+			if DormInfo::<T>::contains_key(dorm_number, bed_number) {
+				return Err(Error::<T>::SetDormInfoDuplicate.into())
+			}
 
 			DormInfo::<T>::insert(&dorm_number, &bed_number, &student_number);
 			Self::deposit_event(Event::SetDormInfo(dorm_number, bed_number, student_number));
