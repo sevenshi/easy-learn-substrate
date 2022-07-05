@@ -48,6 +48,9 @@ frame-benchmarking = { version = "4.0.0-dev", default-features = false, git = "h
 frame-system-benchmarking = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.18", optional = true }
 hex-literal = { version = "0.3.4", optional = true }
 
+pallet-contracts = { version = "4.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.18" }
+node-primitives = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.18" }
+
 # Local Dependencies
 pallet-template = { version = "4.0.0-dev", default-features = false, path = "../pallets/template" }
 pallet-simple-pallet = { version = "4.0.0-dev", default-features = false, path = "../pallets/simple-pallet" }
@@ -57,13 +60,15 @@ pallet-ext-example = { version = "4.0.0-dev", default-features = false, path = "
 pallet-use-hooks = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-hooks" }
 pallet-use-config1 = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-config1" }
 pallet-use-config2 = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-config2" }
-
 pallet-storage-provider = { version = "4.0.0-dev", default-features = false, path = "../pallets/storage-provider" }
 pallet-use-other-pallet1 = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-other-pallet1" }
+pallet-extend-pallet = { version = "4.0.0-dev", default-features = false, path = "../pallets/extend-pallet" }
+
 
 
 pallet-use-rpc = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-rpc" }
 use-rpc-runtime-api = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-rpc/rpc/runtime-api" }
+
 
 [build-dependencies]
 substrate-wasm-builder = { version = "5.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.18" }
@@ -92,6 +97,9 @@ std = [
 	"pallet-use-config2/std",
  	"pallet-storage-provider/std",
  	"pallet-use-other-pallet1/std",
+	"node-primitives/std",
+	"pallet-contracts/std",
+	"pallet-extend-pallet/std",
 
 	"pallet-use-rpc/std",
 	"use-rpc-runtime-api/std",
