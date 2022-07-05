@@ -295,6 +295,17 @@ impl pallet_use_rpc::Config for Runtime {
 	type Event = Event;
 }
 
+impl pallet_use_config1::Config for Runtime {
+	type Event = Event;
+}
+
+impl pallet_use_config2::Config for Runtime {
+	type Event = Event;
+	type StudentNumberType = u32;
+	type StudentNameType = u128;
+}
+
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -318,6 +329,8 @@ construct_runtime!(
 		ExtExample: pallet_ext_example,
 		UseHooks: pallet_use_hooks,
 		UseRpc: pallet_use_rpc,
+		UseConfig1: pallet_use_config1,
+		UseConfig2: pallet_use_config2,
 	}
 );
 

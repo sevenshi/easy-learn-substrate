@@ -55,6 +55,9 @@ pallet-use-storage = { version = "4.0.0-dev", default-features = false, path = "
 pallet-use-errors = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-errors" }
 pallet-ext-example = { version = "4.0.0-dev", default-features = false, path = "../pallets/ext-example" }
 pallet-use-hooks = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-hooks" }
+pallet-use-config1 = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-config1" }
+pallet-use-config2 = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-config2" }
+
 
 pallet-use-rpc = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-rpc" }
 use-rpc-runtime-api = { version = "4.0.0-dev", default-features = false, path = "../pallets/use-rpc/rpc/runtime-api" }
@@ -82,6 +85,9 @@ std = [
 	"pallet-use-errors/std",
 	"pallet-ext-example/std",
 	"pallet-use-hooks/std",
+	"pallet-use-config1/std",
+	"pallet-use-config2/std",
+
 	"pallet-use-rpc/std",
 	"use-rpc-runtime-api/std",
 
